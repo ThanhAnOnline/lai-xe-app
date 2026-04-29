@@ -26,6 +26,7 @@ if 'bai_dang_chon' not in st.session_state:
 
 # --- GIAO DIỆN CHÍNH ---
 st.markdown("<h1 style='text-align: center;'>HỆ THỐNG SÁT HẠCH</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>LÁI XE TRƯỜNG VINH</h1>", unsafe_allow_html=True)
 st.markdown(f"<h2 style='text-align: center; color: red; font-size: 80px;'>đ {st.session_state.diem}</h2>", unsafe_allow_html=True)
 
 # --- KHU VỰC BÀI THI ---
