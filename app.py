@@ -4,7 +4,6 @@ import base64
 # --- CẤU HÌNH GIAO DIỆN ---
 st.set_page_config(page_title="Lái Xe Trường Vinh", layout="centered")
 
-# Hàm mã hóa âm thanh sang Base64 để phát ngay lập tức không cần tải file từ server
 def play_audio(file_path):
     try:
         with open(file_path, "rb") as f:
@@ -17,54 +16,79 @@ def play_audio(file_path):
                 """
             st.markdown(md, unsafe_allow_html=True)
     except FileNotFoundError:
-        st.error(f"Lỗi: Không tìm thấy file {file_path}. An hãy kiểm tra lại tên file trên GitHub!")
+        st.error(f"Không tìm thấy file: {file_path}")
 
-# --- GIAO DIỆN CHÍNH ---
-st.markdown("<h1 style='text-align: center; color: white;'>Thi Đường Trường <br> Lái Xe Trường Vinh</h1>", unsafe_allow_html=True)
-
-# Khởi tạo điểm số
+# --- KHỞI TẠO TRẠNG THÁI ---
 if 'diem' not in st.session_state:
     st.session_state.diem = 100
+if 'bai_dang_chon' not in st.session_state:
+    st.session_state.bai_dang_chon = None
 
-# Hiển thị điểm số nổi bật
-st.markdown(f"<h2 style='text-align: center; color: red; font-size: 80px; margin-bottom: 0px;'>đ {st.session_state.diem}</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: gray;'>Thi thử - Hạng B</p>", unsafe_allow_html=True)
+# --- GIAO DIỆN CHÍNH ---
+st.markdown("<h1 style='text-align: center;'>HỆ THỐNG SÁT HẠCH</h1>", unsafe_allow_html=True)
+st.markdown(f"<h2 style='text-align: center; color: red; font-size: 80px;'>đ {st.session_state.diem}</h2>", unsafe_allow_html=True)
 
-st.write("") # Tạo khoảng cách
-
-# --- KHU VỰC BÀI THI (Phát âm thanh) ---
-st.markdown("<h3 style='color: #00CCFF;'>BÀI THI</h3>", unsafe_allow_html=True)
-col1, col2 = st.columns(2)
+# --- KHU VỰC BÀI THI ---
+st.markdown("### BÀI THI")
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     if st.button("XUẤT PHÁT", use_container_width=True):
+        st.session_state.bai_dang_chon = "xuat_phat"
         play_audio("xuat_phat.mp3")
-    
-    if st.button("GIẢM SỐ", use_container_width=True):
-        play_audio("Giam_so.mp3")
-
 with col2:
     if st.button("TĂNG SỐ", use_container_width=True):
+        st.session_state.bai_dang_chon = "tang_so"
         play_audio("Tang_so.mp3")
-        
+with col3:
+    if st.button("GIẢM SỐ", use_container_width=True):
+        st.session_state.bai_dang_chon = "giam_so"
+        play_audio("Giam_so.mp3")
+with col4:
     if st.button("KẾT THÚC", use_container_width=True):
-        play_audio("Ket_thuc.mp3")
+        st.session_state.bai_dang_chon = "ket_thuc"
+        play_audio(Ket_thuc.mp3")
 
-# --- KHU VỰC LỖI CHUNG (Trừ điểm) ---
 st.markdown("---")
-st.markdown("<h3 style='color: #FFCC00;'>LỖI CHUNG</h3>", unsafe_allow_html=True)
 
-# Danh sách lỗi để An dễ dàng thêm bớt
-if st.button("XE CHOẠNG LÁI (-5 ĐIỂM)", use_container_width=True):
-    st.session_state.diem -= 5
-    st.toast("Đã trừ 5 điểm: Xe choạng lái")
+# --- HIỂN THỊ LỖI THEO BÀI THI ---
+def nut_loi(ten_loi, diem_tru):
+    if st.button(f"{ten_loi} (-{diem_tru})", use_container_width=True):
+        st.session_state.diem -= diem_tru
+        st.toast(f"Đã trừ {diem_tru} điểm!")
+        st.rerun()
 
-if st.button("XE CHẾT MÁY (-5 ĐIỂM)", use_container_width=True):
-    st.session_state.diem -= 5
-    st.toast("Đã trừ 5 điểm: Xe chết máy")
+if st.session_state.bai_dang_chon == "xuat_phat":
+    st.subheader("Lỗi bài Xuất Phát")
+    nut_loi("Không thắt dây an toàn", 5)
+    nut_loi("Không nhả phanh tay", 5)
+    nut_loi("Không bật xi nhan trái", 5)
+    nut_loi("Không đúng số, đúng tốc độ", 5)
+    nut_loi("Không tắt đèn xi nhan trái", 5)
 
-# Nút Reset điểm
-st.write("")
-if st.button("LÀM MỚI BÀI THI (100đ)"):
+elif st.session_state.bai_dang_chon == "tang_so":
+    st.subheader("Lỗi bài Tăng Số")
+    nut_loi("Không tăng số đúng quy định", 5)
+
+elif st.session_state.bai_dang_chon == "giam_so":
+    st.subheader("Lỗi bài Giảm Số")
+    nut_loi("Không giảm số đúng quy định", 5)
+
+elif st.session_state.bai_dang_chon == "ket_thuc":
+    st.subheader("Lỗi bài Kết Thúc")
+    nut_loi("Không bật xi nhan phải", 5)
+    nut_loi("Không tắt xi nhan phải", 5)
+    nut_loi("Không về số 0", 5)
+    nut_loi("Không về được số P", 5)
+    nut_loi("Không kéo phanh tay", 5)
+
+# --- LỖI CHUNG & RESET ---
+st.markdown("---")
+if st.button("LÀM MỚI BÀI THI (100đ)", type="primary", use_container_width=True):
     st.session_state.diem = 100
+    st.session_state.bai_dang_chon = None
+    st.rerun()
+
+if st.button("XE CHOẠNG LÁI / CHẾT MÁY (-5 ĐIỂM)", use_container_width=True):
+    st.session_state.diem -= 5
     st.rerun()
