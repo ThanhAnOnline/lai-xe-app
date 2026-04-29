@@ -47,7 +47,7 @@ with col3:
 with col4:
     if st.button("KẾT THÚC", use_container_width=True):
         st.session_state.bai_dang_chon = "ket_thuc"
-        play_audio(Ket_thuc.mp3")
+        play_audio("Ket_thuc.mp3")
 
 st.markdown("---")
 
