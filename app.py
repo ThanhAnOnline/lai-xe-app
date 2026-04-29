@@ -1,48 +1,44 @@
 import streamlit as st
+import base64
 
-# Cấu hình trang
+# Cấu hình giao diện
 st.set_page_config(page_title="Lái Xe Trường Vinh", layout="centered")
 
-# Giao diện tiêu đề
-st.markdown("<h1 style='text-align: center; color: white;'>HỆ THỐNG SÁT HẠCH</h1>", unsafe_allow_html=True)
+# Hàm xử lý âm thanh ẩn để tự động phát khi bấm nút
+def play_audio(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        md = f"""
+            <audio autoplay="true">
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+            """
+        st.markdown(md, unsafe_allow_html=True)
 
-# Khởi tạo điểm số trong bộ nhớ (nếu chưa có)
+# Giao diện
+st.markdown("<h1 style='text-align: center;'>HỆ THỐNG SÁT HẠCH</h1>", unsafe_allow_html=True)
+
 if 'diem' not in st.session_state:
     st.session_state.diem = 100
 
-# Hiển thị điểm số rực rỡ
-st.markdown(f"<h2 style='text-align: center; color: red; font-size: 60px;'>đ {st.session_state.diem}</h2>", unsafe_allow_html=True)
+st.markdown(f"<h2 style='text-align: center; color: red; font-size: 80px;'>đ {st.session_state.diem}</h2>", unsafe_allow_html=True)
 
-# Hàm để phát âm thanh (An thay link bằng link file mp3 của An nhé)
-def play_audio(url):
-    st.components.v1.html(f"""
-        <audio autoplay>
-            <source src="{url}" type="audio/mp3">
-        </audio>
-    """, height=0)
-
-# Chia cột cho các nút Bài Thi
+# Chia hàng nút bấm
 col1, col2 = st.columns(2)
 
 with col1:
     if st.button("XUẤT PHÁT", use_container_width=True):
-        play_audio("https://www.soundjay.com/buttons/sounds/button-3.mp3") # Ví dụ link âm thanh
-        st.toast("Bắt đầu bài thi Xuất phát")
-
+        play_audio("xuat_phat.mp3")
     if st.button("GIẢM SỐ", use_container_width=True):
-        play_audio("https://www.soundjay.com/buttons/sounds/button-10.mp3")
-        st.toast("Bắt đầu bài thi Giảm số")
+        play_audio("giam_so.mp3")
 
 with col2:
     if st.button("TĂNG SỐ", use_container_width=True):
-        play_audio("https://www.soundjay.com/buttons/sounds/button-4.mp3")
-        st.toast("Bắt đầu bài thi Tăng số")
-
+        play_audio("tang_so.mp3")
     if st.button("KẾT THÚC", use_container_width=True):
-        play_audio("https://www.soundjay.com/buttons/sounds/button-5.mp3")
-        st.toast("Kết thúc bài thi")
+        play_audio("ket_thuc.mp3")
 
-# Nút trừ điểm (Lỗi chung)
 st.markdown("---")
 if st.button("LỖI CHOẠNG LÁI (-5 ĐIỂM)", use_container_width=True):
     st.session_state.diem -= 5
