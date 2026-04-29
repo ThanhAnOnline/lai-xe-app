@@ -41,14 +41,14 @@ with col1:
         play_audio("xuat_phat.mp3")
     
     if st.button("GIẢM SỐ", use_container_width=True):
-        play_audio("giam_so.mp3")
+        play_audio("Giam_so.mp3")
 
 with col2:
     if st.button("TĂNG SỐ", use_container_width=True):
-        play_audio("tang_so.mp3")
+        play_audio("Tang_so.mp3")
         
     if st.button("KẾT THÚC", use_container_width=True):
-        play_audio("ket_thuc.mp3")
+        play_audio("Ket_thuc.mp3")
 
 # --- KHU VỰC LỖI CHUNG (Trừ điểm) ---
 st.markdown("---")
