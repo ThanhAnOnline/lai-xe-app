@@ -20,7 +20,7 @@ def play_audio(file_path):
         st.error(f"Lỗi: Không tìm thấy file {file_path}. An hãy kiểm tra lại tên file trên GitHub!")
 
 # --- GIAO DIỆN CHÍNH ---
-st.markdown("<h1 style='text-align: center; color: white;'>HỆ THỐNG SÁT HẠCH</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: white;'>Thi Đường Trường - Lái Xe Trường Vinh</h1>", unsafe_allow_html=True)
 
 # Khởi tạo điểm số
 if 'diem' not in st.session_state:
